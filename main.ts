@@ -26,6 +26,8 @@ export class TicTacToe {
         if (winner) return winner
         winner = this.checkVerticalWin(columnIndex)
         if (winner) return winner
+        winner = this.checkBoxWin(rowIndex, columnIndex)
+        if (winner) return winner
       }
     }
 
@@ -35,6 +37,28 @@ export class TicTacToe {
     if (winner) return winner
     winner = this.checkFourCornersWin()
     return winner
+  }
+
+  private checkBoxWin(
+    rowIndex: number,
+    columnIndex: number,
+  ): PlayerTokens | null {
+    const cells = [
+      this.gameState[rowIndex][columnIndex],
+      // Right
+      this.gameState.at(rowIndex)?.at(columnIndex + 1),
+      // Down
+      this.gameState.at(rowIndex + 1)?.at(columnIndex),
+      // Diagonal down right
+      this.gameState.at(rowIndex + 1)?.at(columnIndex + 1),
+    ]
+    let tokenToMatch = cells[0]
+
+    for (const cell of cells) {
+      if (cell === unused || cell !== tokenToMatch) return null
+    }
+
+    return tokenToMatch || null
   }
 
   private checkFourCornersWin() {
@@ -114,5 +138,10 @@ export class TicTacToe {
     return false
   }
 
-  public isGameOver() {}
+  public isGameOver() {
+    // Check anyMovesLeft first because it is less costly than checking for win.
+    if (!this.anyMovesLeft()) return true
+    const winner = this.checkWinner()
+    return !!playerTokens.find((token) => token === winner)
+  }
 }

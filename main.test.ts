@@ -20,6 +20,16 @@ function expectCheckWinner({
   expect(new TicTacToe(gameState).checkWinner()).toEqual(expectValue)
 }
 
+function expectIsGameOver({
+  gameState,
+  expectValue,
+}: {
+  gameState: GameState
+  expectValue: boolean
+}) {
+  expect(new TicTacToe(gameState).isGameOver()).toBe(expectValue)
+}
+
 describe("TicTacToe", () => {
   describe("checkWinner", () => {
     describe("Horizontal win", () => {
@@ -118,12 +128,69 @@ describe("TicTacToe", () => {
         })
       })
     })
-    xdescribe("2x2 box win", () => {})
+    describe("2x2 box win", () => {
+      test("x in a 2x2 box in the middle", () => {
+        expectCheckWinner({
+          gameState: [
+            ["o", "-", "-", "-"],
+            ["-", "x", "x", "-"],
+            ["-", "x", "x", "o"],
+            ["-", "o", "-", "-"],
+          ],
+          expectValue: "x",
+        })
+      })
+      test("o in a 2x2 box in the bottom right", () => {
+        expectCheckWinner({
+          gameState: [
+            ["x", "x", "-", "-"],
+            ["-", "-", "x", "-"],
+            ["x", "-", "o", "o"],
+            ["-", "-", "o", "o"],
+          ],
+          expectValue: "o",
+        })
+      })
+    })
   })
 
-  xdescribe("isGameOver", () => {})
+  describe("isGameOver", () => {
+    test("game is over when every cell is taken and there is no winner", () => {
+      expectIsGameOver({
+        gameState: [
+          ["x", "x", "o", "o"],
+          ["o", "o", "x", "x"],
+          ["x", "x", "o", "o"],
+          ["o", "o", "x", "x"],
+        ],
+        expectValue: true,
+      })
+    })
+    test("game is not over", () => {
+      expectIsGameOver({
+        gameState: [
+          ["x", "o", "-", "-"],
+          ["-", "x", "-", "-"],
+          ["-", "-", "o", "-"],
+          ["-", "-", "-", "-"],
+        ],
+        expectValue: false,
+      })
+    })
+    test("game is over when there is a winner", () => {
+      expectIsGameOver({
+        gameState: [
+          ["x", "x", "x", "x"],
+          ["o", "o", "o", "-"],
+          ["-", "-", "-", "-"],
+          ["-", "-", "-", "-"],
+        ],
+        expectValue: true,
+      })
+    })
+  })
 
-  xdescribe("AnyMovesLeft", () => {
+  describe("AnyMovesLeft", () => {
     test("has moves left", () => {
       expectAnyMovesLeft({
         gameState: [
