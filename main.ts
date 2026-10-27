@@ -28,8 +28,29 @@ export class TicTacToe {
         if (winner) return winner
       }
     }
-    winner = this.checkDiagonalWinDownLeft() || this.checkDiagonalWinDownRight()
+
+    winner = this.checkDiagonalWinDownLeft()
+    if (winner) return winner
+    winner = this.checkDiagonalWinDownRight()
+    if (winner) return winner
+    winner = this.checkFourCornersWin()
     return winner
+  }
+
+  private checkFourCornersWin() {
+    const corners = [
+      this.gameState[0][0],
+      this.gameState[0][this.gameState.length - 1],
+      this.gameState[this.gameState.length - 1][0],
+      this.gameState[this.gameState.length - 1][this.gameState.length - 1],
+    ]
+
+    let tokenToMatch = corners[0]
+
+    for (const corner of corners) {
+      if (corner === unused || corner !== tokenToMatch) return null
+    }
+    return tokenToMatch
   }
 
   private checkDiagonalWinDownRight(): PlayerTokens | null {
@@ -55,12 +76,9 @@ export class TicTacToe {
     let cell: Cell | null = tokenToMatch
 
     while (cell) {
-      console.log("rowIndex", rowIndex)
-      console.log("columnIndex", columnIndex)
-      console.log("cell", cell)
       if (cell === unused || cell !== tokenToMatch) return null
-      rowIndex--
-      columnIndex++
+      rowIndex++
+      columnIndex--
       cell = this.gameState.at(rowIndex)?.at(columnIndex) || null
     }
 
@@ -70,11 +88,8 @@ export class TicTacToe {
   private checkVerticalWin(columnIndex: number): PlayerTokens | null {
     let playerValueToMatch = this.gameState[0][columnIndex]
     for (const row of this.gameState) {
-      if (
-        row[columnIndex] === unused ||
-        row[columnIndex] !== playerValueToMatch
-      )
-        return null
+      const cell = row[columnIndex]
+      if (cell === unused || cell !== playerValueToMatch) return null
     }
     return playerValueToMatch
   }

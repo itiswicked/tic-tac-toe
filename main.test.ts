@@ -94,7 +94,30 @@ describe("TicTacToe", () => {
         })
       })
     })
-    xdescribe("4 corners win", () => {})
+    describe("4 corners win", () => {
+      test("x in all four corners", () => {
+        expectCheckWinner({
+          gameState: [
+            ["x", "-", "-", "x"],
+            ["o", "o", "-", "-"],
+            ["-", "-", "o", "-"],
+            ["x", "-", "-", "x"],
+          ],
+          expectValue: "x",
+        })
+      })
+      test("o in all four corners", () => {
+        expectCheckWinner({
+          gameState: [
+            ["o", "x", "x", "o"],
+            ["-", "x", "-", "-"],
+            ["-", "-", "x", "-"],
+            ["o", "-", "-", "o"],
+          ],
+          expectValue: "o",
+        })
+      })
+    })
     xdescribe("2x2 box win", () => {})
   })
 
