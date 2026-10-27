@@ -25,16 +25,6 @@ export class TicTacToe {
     if (winner) return winner
 
     for (let rowIndex = 0; rowIndex < this.gameState.length; rowIndex++) {
-      winner = this.checkHorizontalWin(rowIndex)
-      if (winner) return winner
-    }
-
-    for (let columnIndex = 0; columnIndex < this.gameState.length; columnIndex++) {
-      winner = this.checkVerticalWin(columnIndex)
-      if (winner) return winner
-    }
-
-    for (let rowIndex = 0; rowIndex < this.gameState.length; rowIndex++) {
       for (
         let columnIndex = 0;
         columnIndex < this.gameState.length;
