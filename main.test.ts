@@ -1,4 +1,4 @@
-import { TicTacToe, type GameState } from "./main"
+import { TicTacToe, type GameState, type Cell } from "./main"
 
 function expectAnyMovesLeft({
   gameState,
@@ -10,8 +10,47 @@ function expectAnyMovesLeft({
   expect(new TicTacToe(gameState).anyMovesLeft()).toBe(expectValue)
 }
 
+function expectCheckWinner({
+  gameState,
+  expectValue,
+}: {
+  gameState: GameState
+  expectValue: Cell
+}) {
+  expect(new TicTacToe(gameState).checkWinner()).toEqual(expectValue)
+}
+
 describe("TicTacToe", () => {
-  describe("checkWinner", () => {})
+  describe("checkWinner", () => {
+    describe("Horizontal win", () => {
+      test("first row is all x", () => {
+        expectCheckWinner({
+          gameState: [
+            ["x", "x", "x", "x"],
+            ["-", "-", "-", "-"],
+            ["-", "-", "-", "-"],
+            ["-", "-", "-", "-"],
+          ],
+          expectValue: "x",
+        })
+      })
+      test("second row is all o", () => {
+        expectCheckWinner({
+          gameState: [
+            ["x", "x", "x", "-"],
+            ["o", "o", "o", "o"],
+            ["-", "-", "-", "-"],
+            ["-", "-", "-", "-"],
+          ],
+          expectValue: "o",
+        })
+      })
+    })
+    describe("Vertical win", () => {})
+    describe("Diagonal win", () => {})
+    describe("4 corners win", () => {})
+    describe("2x2 box win", () => {})
+  })
 
   describe("isGameOver", () => {})
 
