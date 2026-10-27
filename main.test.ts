@@ -46,15 +46,61 @@ describe("TicTacToe", () => {
         })
       })
     })
-    describe("Vertical win", () => {})
-    describe("Diagonal win", () => {})
-    describe("4 corners win", () => {})
-    describe("2x2 box win", () => {})
+    describe("Vertical win", () => {
+      test("first column is all x", () => {
+        expectCheckWinner({
+          gameState: [
+            ["x", "o", "-", "-"],
+            ["x", "o", "-", "-"],
+            ["x", "-", "o", "-"],
+            ["x", "-", "-", "-"],
+          ],
+          expectValue: "x",
+        })
+      })
+      test("last column is all o", () => {
+        expectCheckWinner({
+          gameState: [
+            ["x", "x", "-", "o"],
+            ["-", "x", "-", "o"],
+            ["x", "-", "-", "o"],
+            ["-", "-", "-", "o"],
+          ],
+          expectValue: "o",
+        })
+      })
+    })
+    describe("Diagonal win", () => {
+      test("x down and to the right", () => {
+        expectCheckWinner({
+          gameState: [
+            ["x", "o", "-", "-"],
+            ["-", "x", "-", "o"],
+            ["-", "-", "x", "-"],
+            ["o", "-", "-", "x"],
+          ],
+          expectValue: "x",
+        })
+      })
+      test("o down and to the left", () => {
+        expectCheckWinner({
+          gameState: [
+            ["x", "x", "-", "o"],
+            ["-", "x", "o", "x"],
+            ["-", "o", "-", "-"],
+            ["o", "-", "x", "x"],
+          ],
+          expectValue: "o",
+        })
+      })
+    })
+    xdescribe("4 corners win", () => {})
+    xdescribe("2x2 box win", () => {})
   })
 
-  describe("isGameOver", () => {})
+  xdescribe("isGameOver", () => {})
 
-  describe("AnyMovesLeft", () => {
+  xdescribe("AnyMovesLeft", () => {
     test("has moves left", () => {
       expectAnyMovesLeft({
         gameState: [

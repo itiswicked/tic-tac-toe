@@ -15,17 +15,68 @@ export class TicTacToe {
   }
 
   public checkWinner(): PlayerTokens | null {
+    let winner = null
     for (let rowIndex = 0; rowIndex < this.gameState.length; rowIndex++) {
       for (
         let columnIndex = 0;
         columnIndex < this.gameState.length;
         columnIndex++
       ) {
-        let winner = this.checkHorizontalWin(rowIndex)
+        winner = this.checkHorizontalWin(rowIndex)
+        if (winner) return winner
+        winner = this.checkVerticalWin(columnIndex)
         if (winner) return winner
       }
     }
-    return null
+    winner = this.checkDiagonalWinDownLeft() || this.checkDiagonalWinDownRight()
+    return winner
+  }
+
+  private checkDiagonalWinDownRight(): PlayerTokens | null {
+    let rowIndex = 0
+    let columnIndex = 0
+    let tokenToMatch = this.gameState[rowIndex][columnIndex]
+    let cell: Cell | null = tokenToMatch
+    while (cell) {
+      if (cell === unused || cell !== tokenToMatch) return null
+
+      rowIndex++
+      columnIndex++
+      cell = this.gameState.at(rowIndex)?.at(columnIndex) || null
+    }
+
+    return tokenToMatch
+  }
+
+  private checkDiagonalWinDownLeft(): PlayerTokens | null {
+    let rowIndex = 0
+    let columnIndex = this.gameState[0].length - 1
+    let tokenToMatch = this.gameState[rowIndex][columnIndex]
+    let cell: Cell | null = tokenToMatch
+
+    while (cell) {
+      console.log("rowIndex", rowIndex)
+      console.log("columnIndex", columnIndex)
+      console.log("cell", cell)
+      if (cell === unused || cell !== tokenToMatch) return null
+      rowIndex--
+      columnIndex++
+      cell = this.gameState.at(rowIndex)?.at(columnIndex) || null
+    }
+
+    return tokenToMatch
+  }
+
+  private checkVerticalWin(columnIndex: number): PlayerTokens | null {
+    let playerValueToMatch = this.gameState[0][columnIndex]
+    for (const row of this.gameState) {
+      if (
+        row[columnIndex] === unused ||
+        row[columnIndex] !== playerValueToMatch
+      )
+        return null
+    }
+    return playerValueToMatch
   }
 
   private checkHorizontalWin(rowIndex: number): PlayerTokens | null {
