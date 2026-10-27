@@ -16,26 +16,48 @@ export class TicTacToe {
 
   public checkWinner(): PlayerTokens | null {
     let winner = null
+    winner = this.checkDiagonalWinDownLeft()
+    // return early after every check for efficiency
+    if (winner) return winner
+    winner = this.checkDiagonalWinDownRight()
+    if (winner) return winner
+    winner = this.checkFourCornersWin()
+    if (winner) return winner
+
+    for (let rowIndex = 0; rowIndex < this.gameState.length; rowIndex++) {
+      winner = this.checkHorizontalWin(rowIndex)
+      if (winner) return winner
+    }
+
+    for (let columnIndex = 0; columnIndex < this.gameState.length; columnIndex++) {
+      winner = this.checkVerticalWin(columnIndex)
+      if (winner) return winner
+    }
+
     for (let rowIndex = 0; rowIndex < this.gameState.length; rowIndex++) {
       for (
         let columnIndex = 0;
         columnIndex < this.gameState.length;
         columnIndex++
       ) {
-        winner = this.checkHorizontalWin(rowIndex)
-        if (winner) return winner
-        winner = this.checkVerticalWin(columnIndex)
-        if (winner) return winner
+        // Check horizontal wins from the beginning of every row only.
+        // The alternative to having these guards is to break checks out into their own loops,
+        // which looks nicer, but less efficient.
+        if (columnIndex === 0) {
+          winner = this.checkHorizontalWin(rowIndex)
+          if (winner) return winner
+        }
+        // Check vertical wins from the top of every column only.
+        if (rowIndex === 0) {
+          winner = this.checkVerticalWin(columnIndex)
+          if (winner) return winner
+        }
+
         winner = this.checkBoxWin(rowIndex, columnIndex)
         if (winner) return winner
       }
     }
 
-    winner = this.checkDiagonalWinDownLeft()
-    if (winner) return winner
-    winner = this.checkDiagonalWinDownRight()
-    if (winner) return winner
-    winner = this.checkFourCornersWin()
     return winner
   }
 
